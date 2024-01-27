@@ -34,9 +34,6 @@ def init_train(data, dump, num_epochs=100):
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
-    # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
     # PyTorch data loaders
     train_dataset = torch.utils.data.TensorDataset(torch.tensor(X, dtype=torch.float32), torch.tensor(y))
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
@@ -66,14 +63,6 @@ def init_train(data, dump, num_epochs=100):
     # save the model parameters to a json file
     with open(dump, 'w') as f:
         json.dump(params, f)
-
-    # Evaluate the model
-    model.eval()
-    with torch.no_grad():
-        test_outputs = model(torch.tensor(X_test, dtype=torch.float32))
-        _, predicted = torch.max(test_outputs, 1)
-        test_accuracy = accuracy_score(y_test, predicted.numpy())
-        return('Test accuracy:', test_accuracy)
     
 def re_train(data, checkpoint , dump, num_epochs=100):
 
@@ -84,9 +73,6 @@ def re_train(data, checkpoint , dump, num_epochs=100):
     # Standardize the features
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
-
-    # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # PyTorch data loaders
     train_dataset = torch.utils.data.TensorDataset(torch.tensor(X, dtype=torch.float32), torch.tensor(y))
@@ -124,14 +110,6 @@ def re_train(data, checkpoint , dump, num_epochs=100):
     # save the model parameters to a json file
     with open(dump, 'w') as f:
         json.dump(params, f)
-
-    # Evaluate the model
-    model.eval()
-    with torch.no_grad():
-        test_outputs = model(torch.tensor(X_test, dtype=torch.float32))
-        _, predicted = torch.max(test_outputs, 1)
-        test_accuracy = accuracy_score(y_test, predicted.numpy())
-        return('Test accuracy:', test_accuracy)
     
 def predict(data, checkpoint):
     

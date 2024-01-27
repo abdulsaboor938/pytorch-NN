@@ -160,3 +160,18 @@ def load_data(path):
 
 
     return X,y
+
+def get_data(path):
+    X,y=load_data(path)
+
+    # making a single column for all the activities
+    y['activity']=y.idxmax(axis=1)
+
+    # convering the categorical data into numerical data
+    y['activity']=y['activity'].replace({'label:FIX_walking':0,'label:SITTING':1,'label:SLEEPING':2,'label:OR_standing':3,'label:FIX_running':4})
+
+    y = y['activity']
+
+    X['y'] = y
+
+    return X
