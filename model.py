@@ -15,7 +15,7 @@ class SimpleNN(nn.Module):
         self.fc1 = nn.Linear(9, 16)
         self.fc2 = nn.Linear(16, 16)
         self.fc3 = nn.Linear(16, 8)
-        self.fc4 = nn.Linear(8, 4)
+        self.fc4 = nn.Linear(8, 5)
 
     def forward(self, x):
         x = nn.functional.leaky_relu(self.fc1(x))
@@ -38,7 +38,7 @@ def init_train(data, dump, num_epochs=100):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # PyTorch data loaders
-    train_dataset = torch.utils.data.TensorDataset(torch.tensor(X_train, dtype=torch.float32), torch.tensor(y_train))
+    train_dataset = torch.utils.data.TensorDataset(torch.tensor(X, dtype=torch.float32), torch.tensor(y))
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
         
     # Initialize the model, loss function, and optimizer
